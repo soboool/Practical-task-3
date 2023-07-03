@@ -1,52 +1,34 @@
-# Prerequisites
-*.d
+#include <stdio.h>
 
-# Object files
-*.o
-*.ko
-*.obj
-*.elf
+// Функція для підрахунку кількості чисел із р розрядів
+int countNumbers(int r) {
+    if (r <= 0)
+        return 0;
 
-# Linker output
-*.ilk
-*.map
-*.exp
+    // Ініціалізуємо змінні
+    int count = 0;
+    int prev_digit = -1;  // Попередній розглянутий розряд
 
-# Precompiled Headers
-*.gch
-*.pch
+    // Рекурсивно перебираємо всі можливі комбінації розрядів
+    for (int digit = 5; digit <= 9; digit++) {
+        // Якщо попередній розряд не є такий самий як поточний існує ще розряд
+        if (digit != prev_digit && r > 1) {
+            count += countNumbers(r - 1);  // Рекурсивно викликаємо функцію для меншого розряду
+        } else if (digit != prev_digit && r == 1) {
+            count++;  // Досягнули розряду одиниць, збільшуємо лічильник
+        }
+    }
 
-# Libraries
-*.lib
-*.a
-*.la
-*.lo
+    return count;
+}
 
-# Shared objects (inc. Windows DLLs)
-*.dll
-*.so
-*.so.*
-*.dylib
+int main() {
+    int r;
+    printf("Введіть кількість розрядів (р ≤ 30): ");
+    scanf("%d", &r);
 
-# Executables
-*.exe
-*.out
-*.app
-*.i*86
-*.x86_64
-*.hex
+    int result = countNumbers(r);
+    printf("Кількість чисел із %d розрядів: %d\n", r, result);
 
-# Debug files
-*.dSYM/
-*.su
-*.idb
-*.pdb
-
-# Kernel Module Compile Results
-*.mod*
-*.cmd
-.tmp_versions/
-modules.order
-Module.symvers
-Mkfile.old
-dkms.conf
+    return 0;
+}
